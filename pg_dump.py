@@ -1,6 +1,5 @@
-# creating backup of postgresql databse using pg_dump and remove backups older than two days  ( intentionally running from crontab )
+# Script that makes dump of postgresql AWX database, create it and remove ones older than two days
 # Run script:  backup.py BASE64_ENCODED_PG_PASSWORD  PATH_TO_BACKUPS  eg.  backup.py  cGFzc3dvcmQ=  /var/pg_backup
-# TODO: write execution of "-h" parameter to show help
 
 import os, sys
 
@@ -13,7 +12,7 @@ if not os.path.exists(log_path):
 #print(pg_password)
 #print(log_path)
 
-f = open( 'password', 'w' )                                                             # write base64 encoded pg_password to file
+f = open( 'password', 'w' )                                                             # write pg_password to file
 f.write(pg_password)
 f.close()
 
@@ -25,7 +24,10 @@ os.chmod("/root/.pgpass", 0o600)                                                
 os.environ['"PGPASSFILE"'] = "~/.pgpass"                                                # Export needed variables
 os.environ['log_path'] = log_path
 
-pg_dump_script = """ pg_dump -h localhost -U awx awx | gzip > $log_path/backup-"`date '+%Y-%m-%d-%H:%M'`".gz """          # make backup
+#print(os.environ['"PGPASSFILE"'])
+#print(os.environ['log_path'])
+
+pg_dump_script = """ pg_dump -h localhost -U awx --no-password awx | gzip > $log_path/backup-"`date '+%Y-%m-%d-%H:%M'`".gz """          # make backup
 os.system("bash -c '%s'" % pg_dump_script)
 
 #print ( "files to remove\n"  )
