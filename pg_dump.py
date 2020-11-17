@@ -1,3 +1,4 @@
+# make backup og postgresql database
 import datetime, sys, os
 
 help_message = """
@@ -7,20 +8,20 @@ example:
 backup.py  cGFzc3dvcmQ=  /var/pg_backup
 """
 
-try:                                    # check if atguments were passed to script
+try:                                                                # check if atguments were passed to script
     sys.argv[1]
 except IndexError:
     print("No args given. Run backup.py --help for help")
     quit()
 
-if sys.argv[1] == "--help" or sys.argv[1] == "-h":    # if firs targument is -h or --help display help message
+if sys.argv[1] == "--help" or sys.argv[1] == "-h":                  # if firs targument is -h or --help display help message
     print(help_message)
     quit()
 
-pg_password = sys.argv[1]
+pg_password = sys.argv[1]                                           # write provided parameters to variables
 log_path = sys.argv[2]
 
-if not os.path.exists(log_path):
+if not os.path.exists(log_path):                                    # cechk if backup dir exists and if not create
     os.makedirs(log_path)
 
 #print(pg_password)
@@ -30,10 +31,13 @@ f = open( 'password', 'w' )                                                     
 f.write(pg_password)
 f.close()
 
+home=os.environ['HOME']                                                 # set path to pgpass file to variable
+full_path=home + "/.pgpass"
+
 pgpass_script = """ echo "*:*:awx:awx:"`base64 -d password`"" > ~/.pgpass """           # prepare pgpass file with base64 decoded pg_dump password
 os.system("bash -c '%s'" % pgpass_script)
 
-os.chmod("/root/.pgpass", 0o600)                                                        # Manage pgpass file
+os.chmod(full_path, 0o600)                                                        # Manage pgpass file
 
 os.environ['"PGPASSFILE"'] = "~/.pgpass"                                                # Export needed variables
 os.environ['log_path'] = log_path
@@ -53,4 +57,4 @@ old_remove_script = """ if [[ $? == "0" ]]; then find $log_path -mtime +2 -iname
 os.system("bash -c '%s'" % old_remove_script)
 
 os.remove("password")                           # clean temporary files
-os.remove("/root/.pgpass")
+os.remove(full_path)
