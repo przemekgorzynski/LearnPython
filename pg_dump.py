@@ -1,7 +1,21 @@
-# Script that makes dump of postgresql AWX database, create it and remove ones older than two days
-# Run script:  backup.py BASE64_ENCODED_PG_PASSWORD  PATH_TO_BACKUPS  eg.  backup.py  cGFzc3dvcmQ=  /var/pg_backup
+import datetime, sys, os
 
-import os, sys
+help_message = """
+Script that makes dump of postgresql AWX database, create it and remove ones older than two days
+Run script:  backup.py BASE64_ENCODED_PG_PASSWORD  PATH_TO_BACKUPS
+example:
+backup.py  cGFzc3dvcmQ=  /var/pg_backup
+"""
+
+try:                                    # check if atguments were passed to script
+    sys.argv[1]
+except IndexError:
+    print("No args given. Run backup.py --help for help")
+    quit()
+
+if sys.argv[1] == "--help" or sys.argv[1] == "-h":    # if firs targument is -h or --help display help message
+    print(help_message)
+    quit()
 
 pg_password = sys.argv[1]
 log_path = sys.argv[2]
