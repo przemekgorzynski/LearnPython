@@ -1,5 +1,6 @@
 # Script moves mouse X times every 30 sec.
-import mouse, sys, time, datetime
+
+import sys, time, datetime
 
 help_message = """
 *** TO USE THIS SCRIPT INSTALL MOUSE LIBRARY: *** \nsudo apt install python-pip3\npip3 install mouse
@@ -19,6 +20,8 @@ except IndexError:
 if sys.argv[1] == "--help" or sys.argv[1] == "-h":                  
     print(help_message)
     quit()
+
+import mouse
 
 now=datetime.datetime.now()
 print('')
