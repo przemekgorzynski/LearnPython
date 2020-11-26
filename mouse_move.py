@@ -32,7 +32,7 @@ print("Your idle time is:", int(sys.argv[1]), "minutes")
 i=0
 
 while i < int(sys.argv[1]):
-   print("Minutes passed:", i)
+   print("Minutes passed:", i, " | ", "Minutes left:", int(sys.argv[1])-i)
    mouse.move(1, 1, absolute=False, duration=0.2)
    time.sleep(60)
    i += 1
