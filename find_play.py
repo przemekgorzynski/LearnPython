@@ -21,7 +21,7 @@ def get_random(file_list):
     return random.choice(file_list)
 
 def play_movie(movie):
-     command= "/usr/bin/vlc {} 2>/dev/null".format(movie)
+     command= "/usr/bin/vlc {} 2>/dev/null &".format(movie)
      print(command)
      subprocess.run([command], shell=True)
 
