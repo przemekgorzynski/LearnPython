@@ -13,6 +13,7 @@ def mount(path):
     else:
         try:
             subprocess.run([command], shell=True)
+            time.sleep(5)
         except Exception:
             pass
 
@@ -38,7 +39,6 @@ except:
 
 print(path)
 mount(path)
-time.sleep(5)
 list_files(path)
 movie=get_random(file_list)
 print(movie)
