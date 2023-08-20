@@ -4,6 +4,7 @@ import os
 import sys
 import random
 import subprocess
+import time
 
 def mount(path):
     command = 'sudo mount -t cifs -o credentials=/.smbcredentials,nounix,uid=1000,gid=100,dir_mode=0770,file_mode=0660 //192.168.0.61/other /home_nas_backup'
@@ -37,6 +38,7 @@ except:
 
 print(path)
 mount(path)
+time.sleep(5)
 list_files(path)
 movie=get_random(file_list)
 print(movie)
