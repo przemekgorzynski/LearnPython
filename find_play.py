@@ -5,6 +5,7 @@ import sys
 import random
 import subprocess
 import time
+import glob
 
 HELP_MESSAGE = """
 Script usage:
@@ -32,11 +33,31 @@ def list_files(PATH):
         for file in files:
             FULL_FILE_LIST.append(os.path.join(root,file))
 
-# Make list CHOICE_LIST of size CHOICE_LIST_SIZE with random choices from FULL_FILE_LIST                
+# Make and return list CHOICE_LIST of size CHOICE_LIST_SIZE with random, unique choices from FULL_FILE_LIST
+# Allows to limit choices with substring in filename.
+# If list with substring limitaion is smaller than CHOICE_LIST_SIZE, returns all occurences.
 def get_random(FULL_FILE_LIST, CHOICE_LIST_SIZE):
-    for i in range(CHOICE_LIST_SIZE):
-        i = random.choice(FULL_FILE_LIST)
-        CHOICE_LIST.append(i)
+    CHOICE_LIST = []
+    TMP_CHOOSE_LIST = []
+    print("Any substring(sub-string/no)")
+    x = input()
+    if x == "no":
+        while len(CHOICE_LIST) <= CHOICE_LIST_SIZE-1:
+            i = random.choice(FULL_FILE_LIST)
+            if i not in CHOICE_LIST:
+                CHOICE_LIST.append(i)
+    else:
+        print(f"You choosed: {x}, Happy watching !!")
+        for i in FULL_FILE_LIST:
+            if x.lower() in i.lower():
+                TMP_CHOOSE_LIST.append(i)
+        if len(TMP_CHOOSE_LIST) < CHOICE_LIST_SIZE:
+            CHOICE_LIST = TMP_CHOOSE_LIST
+        else:
+            while len(CHOICE_LIST) <= CHOICE_LIST_SIZE-1:
+                i = random.choice(TMP_CHOOSE_LIST)
+                if i not in CHOICE_LIST:
+                    CHOICE_LIST.append(i)
     return CHOICE_LIST
 
 # Print CHOICE_LIST, wait for user's choice and play choosen file
