@@ -47,7 +47,7 @@ def get_random(FULL_FILE_LIST, CHOICE_LIST_SIZE):
             if i not in CHOICE_LIST:
                 CHOICE_LIST.append(i)
     else:
-        print(f"You choosed: {x}, Happy watching !!")
+        print(f"You choosed: {x}")
         for i in FULL_FILE_LIST:
             if x.lower() in i.lower():
                 TMP_CHOOSE_LIST.append(i)
@@ -68,10 +68,11 @@ def play_movie(CHOICE_LIST):
     print("And the winner is ....")
     choice = input()
     if int(choice) > len(CHOICE_LIST):
-        print ("NUmber out of list range")
+        print ("Number out of list range")
         quit()
     else:
         print(CHOICE_LIST[int(choice)-1])
+        print("Happy watching !!")
     command= f"/usr/bin/vlc {CHOICE_LIST[int(choice)-1]} 2>/dev/null"
     subprocess.run([command], shell=True, check=False)
 
